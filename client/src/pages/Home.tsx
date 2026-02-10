@@ -31,7 +31,8 @@ import {
   ChevronDown,
   Star,
   Award,
-  ExternalLink
+  ExternalLink,
+  TreePine
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -97,7 +98,7 @@ function Navigation() {
     }`}>
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          <a href="#" className="flex items-center gap-2 sm:gap-3 z-50">
+          <a href="#" className="flex items-center gap-2 sm:gap-3 z-[10000] relative">
             <img src={IMAGES.logo} alt="Raahat Logo" className="h-8 sm:h-10 md:h-12 w-auto" />
             <span className="font-display text-lg sm:text-xl font-semibold text-foreground">
               Raahat
@@ -122,7 +123,7 @@ function Navigation() {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 z-50 relative"
+            className="lg:hidden p-2 z-[10000] relative"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -139,7 +140,7 @@ function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden"
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9998] lg:hidden"
             onClick={() => setIsMobileMenuOpen(false)}
           />
         )}
@@ -153,7 +154,7 @@ function Navigation() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-white shadow-2xl z-40 lg:hidden"
+            className="fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-white shadow-2xl z-[9999] lg:hidden"
           >
             <div className="pt-20 pb-8 px-6 h-full overflow-y-auto">
               <div className="space-y-1">
@@ -177,14 +178,17 @@ function Navigation() {
               <div className="mt-8 px-4 pt-6 border-t border-border/50">
                 <p className="text-xs text-muted-foreground mb-3">Follow us</p>
                 <div className="flex gap-3">
-                  <a href="#" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="Instagram">
+                  <a href="https://instagram.com/wellness.society_iitmbs" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="Instagram">
                     <Instagram className="h-4 w-4 text-primary" />
                   </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/company/wellness-society-iitmbs/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="LinkedIn">
                     <Linkedin className="h-4 w-4 text-primary" />
                   </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="YouTube">
+                  <a href="https://www.youtube.com/@Raahatiitmbs" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="YouTube">
                     <Youtube className="h-4 w-4 text-primary" />
+                  </a>
+                  <a href="https://linktr.ee/wellness.society.iitmbs" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="Linktree">
+                    <TreePine className="h-4 w-4 text-primary" />
                   </a>
                 </div>
               </div>
@@ -354,7 +358,7 @@ function ServicesSection() {
     {
       icon: MessageCircle,
       title: "Counseling Services",
-      description: "Free, confidential counseling sessions with qualified therapists. No medication, only pure interaction in a safe environment.",
+      description: "Free, confidential counseling sessions with a trusted soul. No medication, only pure interaction in a safe environment.",
       color: "bg-primary/10 text-primary"
     },
     {
@@ -573,7 +577,7 @@ function InitiativesSection() {
       title: "Wellness Wednesdays",
       description: "Weekly sessions focusing on different aspects of mental wellness — from meditation to art therapy.",
       image: IMAGES.meditation,
-      date: "Every Wednesday"
+      date: "Every Month"
     },
     {
       title: "Peer Counselor Training",
@@ -648,31 +652,7 @@ function InitiativesSection() {
           ))}
         </motion.div>
 
-        {/* Assessment CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 sm:mt-12 md:mt-16 text-center"
-        >
-          <Card className="bg-gradient-to-r from-primary/10 via-accent/10 to-chart-5/10 border-0 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12">
-            <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-3 sm:mb-4">
-              Take Your First Step
-            </h3>
-            <p className="text-sm sm:text-base text-foreground/70 mb-4 sm:mb-6 max-w-xl mx-auto px-2">
-              Awareness is key. Take a quick 5-minute self-assessment to understand your mental health better.
-            </p>
-            <Button asChild size="lg" className="rounded-full px-6 sm:px-8 text-sm sm:text-base">
-              <a href="https://forms.gle/bxcFSdmaU9qoMeUW6" target="_blank" rel="noopener noreferrer">
-                Take Assessment <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-              </a>
-            </Button>
-            <p className="text-[10px] sm:text-xs text-muted-foreground mt-3 sm:mt-4">
-              Note: This isn't a strict medical examination
-            </p>
-          </Card>
-        </motion.div>
+
       </div>
     </section>
   );
@@ -943,9 +923,10 @@ function JoinSection() {
 // Footer - responsive grid
 function Footer() {
   const socialLinks = [
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Youtube, href: "#", label: "YouTube" }
+    { icon: Instagram, href: "https://instagram.com/wellness.society_iitmbs", label: "Instagram" },
+    { icon: Linkedin, href: "https://www.linkedin.com/company/wellness-society-iitmbs/", label: "LinkedIn" },
+    { icon: Youtube, href: "https://www.youtube.com/@Raahatiitmbs", label: "YouTube" },
+    { icon: TreePine, href: "https://linktr.ee/wellness.society.iitmbs", label: "Linktree" }
   ];
 
   const quickLinks = [
@@ -974,6 +955,8 @@ function Footer() {
                 <a
                   key={index}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
                   aria-label={social.label}
                 >
@@ -1006,7 +989,7 @@ function Footer() {
             <ul className="space-y-3 sm:space-y-4">
               <li className="flex items-start gap-2 sm:gap-3">
                 <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-primary mt-0.5 flex-shrink-0" />
-                <span className="text-white/70 text-sm sm:text-base break-all">raahat@study.iitm.ac.in</span>
+                <span className="text-white/70 text-sm sm:text-base break-all">wellness.society@study.iitm.ac.in</span>
               </li>
               <li className="flex items-start gap-2 sm:gap-3">
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary mt-0.5 flex-shrink-0" />
