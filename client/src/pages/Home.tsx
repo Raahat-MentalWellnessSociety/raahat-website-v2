@@ -305,7 +305,7 @@ function AboutSection() {
                   <Heart className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-primary" />
                 </div>
                 <div>
-                  <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-foreground">500+</div>
+                  <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-foreground">800+</div>
                   <div className="text-xs sm:text-sm text-muted-foreground">Students Supported</div>
                 </div>
               </div>
