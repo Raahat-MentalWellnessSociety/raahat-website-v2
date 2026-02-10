@@ -225,7 +225,7 @@ function HeroSection() {
           >
             <motion.div variants={fadeInUp} className="mb-4 sm:mb-6">
               <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium">
-                IIT Madras BS in Data Science
+                IIT Madras BS in Data Science and Applications
               </span>
             </motion.div>
             
