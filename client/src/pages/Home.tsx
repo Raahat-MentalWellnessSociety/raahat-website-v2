@@ -993,7 +993,7 @@ function Footer() {
               </li>
               <li className="flex items-start gap-2 sm:gap-3">
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary mt-0.5 flex-shrink-0" />
-                <span className="text-white/70 text-sm sm:text-base">IIT Madras BS in Data Science</span>
+                <span className="text-white/70 text-sm sm:text-base">IIT Madras BS in Data Science and Applications</span>
               </li>
             </ul>
           </div>
