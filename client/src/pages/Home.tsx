@@ -11,9 +11,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Heart, 
@@ -31,7 +28,10 @@ import {
   Youtube,
   Mail,
   MapPin,
-  ChevronDown
+  ChevronDown,
+  Star,
+  Award,
+  ExternalLink
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -678,16 +678,44 @@ function InitiativesSection() {
   );
 }
 
-// Council Section - responsive grid with proper wrapping
+// Council Section - structured with Founders, Secretary, Deputy Secretary, Event Coordinators
 function CouncilSection() {
-  const councilMembers: Array<{ name: string; role: string; placeholder: boolean; image?: string }> = [
-    { name: "Council Head", role: "President", placeholder: true },
-    { name: "Vice President", role: "Vice President", placeholder: true },
-    { name: "Secretary", role: "Secretary", placeholder: true },
-    { name: "Treasurer", role: "Treasurer", placeholder: true },
-    { name: "Events Coordinator", role: "Events Head", placeholder: true },
-    { name: "Outreach Lead", role: "Outreach Head", placeholder: true }
+  // Founders row
+  const founders = [
+    { name: "Founder 1", role: "Co-Founder", icon: Star },
+    { name: "Founder 2", role: "Co-Founder", icon: Star }
   ];
+
+  // Leadership row
+  const leadership = [
+    { name: "Secretary", role: "Secretary", icon: Award },
+    { name: "Deputy Secretary", role: "Deputy Secretary", icon: Shield }
+  ];
+
+  // Event Coordinators row
+  const coordinators = [
+    { name: "Event Coordinator 1", role: "Event Coordinator", icon: Calendar },
+    { name: "Event Coordinator 2", role: "Event Coordinator", icon: Calendar }
+  ];
+
+  const renderMemberCard = (member: { name: string; role: string; icon: React.ComponentType<{ className?: string }> }, index: number, isFounder?: boolean) => (
+    <motion.div key={index} variants={fadeInUp} className="text-center group">
+      <div className="relative mb-3 sm:mb-4">
+        <div className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 ${isFounder ? 'lg:w-36 lg:h-36' : ''} mx-auto rounded-full bg-gradient-to-br ${isFounder ? 'from-chart-1/30 via-primary/20 to-chart-3/30' : 'from-primary/20 to-accent/30'} flex items-center justify-center overflow-hidden soft-shadow group-hover:shadow-lg transition-all duration-300`}>
+          <Users className={`${isFounder ? 'h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14' : 'h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12'} text-primary/50`} />
+        </div>
+        {/* Decorative ring */}
+        <div className={`absolute inset-0 w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 ${isFounder ? 'lg:w-36 lg:h-36' : ''} mx-auto rounded-full border-2 ${isFounder ? 'border-chart-1/30' : 'border-primary/20'} scale-110 group-hover:scale-125 transition-transform duration-300`} />
+      </div>
+      <div className="flex items-center justify-center gap-1.5 mb-1">
+        <member.icon className={`h-3 w-3 sm:h-3.5 sm:w-3.5 ${isFounder ? 'text-chart-1' : 'text-primary/70'}`} />
+        <span className={`text-[10px] sm:text-xs font-semibold uppercase tracking-wider ${isFounder ? 'text-chart-1' : 'text-primary/70'}`}>
+          {member.role}
+        </span>
+      </div>
+      <h4 className="font-semibold text-sm sm:text-base md:text-lg text-foreground px-1">{member.name}</h4>
+    </motion.div>
+  );
 
   return (
     <section id="council" className="py-16 sm:py-20 md:py-24 bg-white relative overflow-hidden">
@@ -726,34 +754,64 @@ function CouncilSection() {
           </motion.p>
         </motion.div>
 
+        {/* Founders Section */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           variants={staggerContainer}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 md:gap-6"
+          className="mb-10 sm:mb-12 md:mb-14"
         >
-          {councilMembers.map((member, index) => (
-            <motion.div key={index} variants={fadeInUp} className="text-center group">
-              <div className="relative mb-3 sm:mb-4">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-accent/30 flex items-center justify-center overflow-hidden soft-shadow group-hover:shadow-lg transition-all duration-300">
-                  {member.placeholder ? (
-                    <Users className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-primary/50" />
-                  ) : (
-                    <img 
-                      src={member.image} 
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                {/* Decorative ring */}
-                <div className="absolute inset-0 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 mx-auto rounded-full border-2 border-primary/20 scale-110 group-hover:scale-125 transition-transform duration-300" />
-              </div>
-              <h4 className="font-semibold text-xs sm:text-sm md:text-base text-foreground mb-0.5 sm:mb-1 truncate px-1">{member.name}</h4>
-              <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground truncate px-1">{member.role}</p>
-            </motion.div>
-          ))}
+          <motion.h3 
+            variants={fadeInUp}
+            className="text-center font-display text-lg sm:text-xl md:text-2xl font-semibold text-foreground mb-6 sm:mb-8"
+          >
+            <span className="inline-flex items-center gap-2">
+              <Star className="h-4 w-4 sm:h-5 sm:w-5 text-chart-1" />
+              Founders
+              <Star className="h-4 w-4 sm:h-5 sm:w-5 text-chart-1" />
+            </span>
+          </motion.h3>
+          <div className="flex justify-center gap-8 sm:gap-12 md:gap-16 lg:gap-20">
+            {founders.map((member, index) => renderMemberCard(member, index, true))}
+          </div>
+        </motion.div>
+
+        {/* Leadership Section */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+          className="mb-10 sm:mb-12 md:mb-14"
+        >
+          <motion.h3 
+            variants={fadeInUp}
+            className="text-center font-display text-lg sm:text-xl md:text-2xl font-semibold text-foreground mb-6 sm:mb-8"
+          >
+            Leadership
+          </motion.h3>
+          <div className="flex justify-center gap-8 sm:gap-12 md:gap-16 lg:gap-20">
+            {leadership.map((member, index) => renderMemberCard(member, index))}
+          </div>
+        </motion.div>
+
+        {/* Event Coordinators Section */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+        >
+          <motion.h3 
+            variants={fadeInUp}
+            className="text-center font-display text-lg sm:text-xl md:text-2xl font-semibold text-foreground mb-6 sm:mb-8"
+          >
+            Event Coordinators
+          </motion.h3>
+          <div className="flex justify-center gap-8 sm:gap-12 md:gap-16 lg:gap-20">
+            {coordinators.map((member, index) => renderMemberCard(member, index))}
+          </div>
         </motion.div>
 
         <motion.p
@@ -761,29 +819,27 @@ function CouncilSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
-          className="text-center text-muted-foreground mt-8 sm:mt-10 text-xs sm:text-sm"
+          className="text-center text-muted-foreground mt-10 sm:mt-12 text-xs sm:text-sm"
         >
-          Council member details will be updated soon. Stay tuned!
+          Council member names and photos will be updated soon. Stay tuned!
         </motion.p>
       </div>
     </section>
   );
 }
 
-// Join Section (Membership Form) - responsive form layout
+// Join Section - Direct link to Google Form membership
 function JoinSection() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    rollNumber: "",
-    batch: "",
-    reason: ""
-  });
+  const membershipFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdrt3mQJ0OTl_n7lBOs7DmgSaM1GKflVHmWleZD_0oWpTEvsQ/viewform";
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    window.open("https://forms.gle/bxcFSdmaU9qoMeUW6", "_blank");
-  };
+  const benefits = [
+    { icon: Heart, text: "Access to free counseling sessions" },
+    { icon: Users, text: "Join a supportive peer community" },
+    { icon: Sparkles, text: "Exclusive workshops & wellness events" },
+    { icon: Award, text: "Leadership & volunteering opportunities" },
+    { icon: Brain, text: "Mental health resources & self-assessments" },
+    { icon: Shield, text: "Safe, confidential, and judgment-free space" }
+  ];
 
   return (
     <section id="join" className="py-16 sm:py-20 md:py-24 bg-gradient-to-b from-white to-accent/20 relative overflow-hidden">
@@ -821,8 +877,8 @@ function JoinSection() {
               variants={fadeInUp}
               className="text-sm sm:text-base md:text-lg text-foreground/70 max-w-2xl mx-auto px-2"
             >
-              Join our community of students committed to mental wellness. 
-              Fill out the form below or use our official registration link.
+              Join our community of students committed to mental wellness.
+              Take the first step towards a healthier, happier you.
             </motion.p>
           </motion.div>
 
@@ -833,81 +889,48 @@ function JoinSection() {
             transition={{ duration: 0.6 }}
           >
             <Card className="bg-white/90 backdrop-blur-sm border-0 soft-shadow rounded-2xl sm:rounded-3xl overflow-hidden">
-              <CardContent className="p-5 sm:p-6 md:p-8 lg:p-12">
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-                    <div className="space-y-1.5 sm:space-y-2">
-                      <Label htmlFor="name" className="text-foreground text-sm sm:text-base">Full Name</Label>
-                      <Input
-                        id="name"
-                        placeholder="Enter your full name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="rounded-lg sm:rounded-xl border-border/50 focus:border-primary h-10 sm:h-11 text-sm sm:text-base"
-                      />
+              <CardContent className="p-6 sm:p-8 md:p-10 lg:p-14">
+                {/* Why Join section */}
+                <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-foreground text-center mb-6 sm:mb-8">
+                  Why Join Raahat?
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 sm:mb-10">
+                  {benefits.map((benefit, index) => (
+                    <div key={index} className="flex items-center gap-3 p-3 sm:p-4 rounded-xl bg-secondary/40 hover:bg-secondary/60 transition-colors">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <benefit.icon className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-primary" />
+                      </div>
+                      <span className="text-sm sm:text-base text-foreground/80">{benefit.text}</span>
                     </div>
-                    <div className="space-y-1.5 sm:space-y-2">
-                      <Label htmlFor="email" className="text-foreground text-sm sm:text-base">Email Address</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="your.email@study.iitm.ac.in"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="rounded-lg sm:rounded-xl border-border/50 focus:border-primary h-10 sm:h-11 text-sm sm:text-base"
-                      />
-                    </div>
-                  </div>
+                  ))}
+                </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-                    <div className="space-y-1.5 sm:space-y-2">
-                      <Label htmlFor="rollNumber" className="text-foreground text-sm sm:text-base">Roll Number</Label>
-                      <Input
-                        id="rollNumber"
-                        placeholder="e.g., 21f1000xxx"
-                        value={formData.rollNumber}
-                        onChange={(e) => setFormData({ ...formData, rollNumber: e.target.value })}
-                        className="rounded-lg sm:rounded-xl border-border/50 focus:border-primary h-10 sm:h-11 text-sm sm:text-base"
-                      />
-                    </div>
-                    <div className="space-y-1.5 sm:space-y-2">
-                      <Label htmlFor="batch" className="text-foreground text-sm sm:text-base">Batch</Label>
-                      <Input
-                        id="batch"
-                        placeholder="e.g., 2021, 2022, 2023"
-                        value={formData.batch}
-                        onChange={(e) => setFormData({ ...formData, batch: e.target.value })}
-                        className="rounded-lg sm:rounded-xl border-border/50 focus:border-primary h-10 sm:h-11 text-sm sm:text-base"
-                      />
-                    </div>
-                  </div>
+                {/* Divider */}
+                <div className="flex items-center gap-4 mb-8 sm:mb-10">
+                  <div className="flex-1 h-px bg-border/50" />
+                  <span className="text-xs sm:text-sm text-muted-foreground font-medium">Ready to join?</span>
+                  <div className="flex-1 h-px bg-border/50" />
+                </div>
 
-                  <div className="space-y-1.5 sm:space-y-2">
-                    <Label htmlFor="reason" className="text-foreground text-sm sm:text-base">Why do you want to join Raahat?</Label>
-                    <Textarea
-                      id="reason"
-                      placeholder="Tell us about your interest in mental wellness and what you hope to contribute or gain..."
-                      value={formData.reason}
-                      onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-                      className="rounded-lg sm:rounded-xl border-border/50 focus:border-primary min-h-[100px] sm:min-h-[120px] text-sm sm:text-base"
-                    />
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4">
-                    <Button type="submit" size="lg" className="rounded-full px-6 sm:px-8 flex-1 text-sm sm:text-base h-11 sm:h-12">
-                      Submit Application <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                    </Button>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      size="lg" 
-                      className="rounded-full px-6 sm:px-8 bg-transparent text-sm sm:text-base h-11 sm:h-12"
-                      onClick={() => window.open("https://forms.gle/bxcFSdmaU9qoMeUW6", "_blank")}
-                    >
-                      Use Google Form
-                    </Button>
-                  </div>
-                </form>
+                {/* CTA */}
+                <div className="text-center">
+                  <p className="text-sm sm:text-base text-foreground/70 mb-5 sm:mb-6 max-w-lg mx-auto">
+                    Fill out our membership form to become a part of the Raahat family. 
+                    It only takes a couple of minutes!
+                  </p>
+                  <Button 
+                    asChild 
+                    size="lg" 
+                    className="rounded-full px-8 sm:px-10 md:px-12 text-sm sm:text-base md:text-lg h-12 sm:h-14 shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <a href={membershipFormUrl} target="_blank" rel="noopener noreferrer">
+                      Open Membership Form <ExternalLink className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                    </a>
+                  </Button>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground mt-3 sm:mt-4">
+                    You'll be redirected to a Google Form
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
