@@ -937,7 +937,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="bg-slate text-white py-10 sm:py-12 md:py-16">
+    <footer className="bg-foreground text-white py-10 sm:py-12 md:py-16">
       <div className="container">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-8 sm:mb-10 md:mb-12">
           {/* Brand */}
