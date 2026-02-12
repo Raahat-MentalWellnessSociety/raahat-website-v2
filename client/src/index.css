@@ -1,9 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -15,7 +10,6 @@
  * 
  * Typography: Playfair Display (elegant headers) + DM Sans (clean body)
  * Colors: Soft gradients from warm peach to lavender, lotus-inspired accents
- * RESPONSIVE: Mobile-first approach with fluid scaling
  */
 
 @theme inline {
@@ -59,6 +53,7 @@
   /* Custom Raahat colors */
   --font-display: 'Playfair Display', serif;
   --font-body: 'DM Sans', sans-serif;
+  --font-alice: "Alice", serif;
 }
 
 :root {
@@ -155,15 +150,10 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    box-sizing: border-box;
   }
   body {
     @apply bg-background text-foreground;
     font-family: 'DM Sans', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    /* Prevent horizontal overflow on mobile */
-    overflow-x: hidden;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
@@ -178,17 +168,6 @@
   input[type="checkbox"]:not(:disabled),
   input[type="radio"]:not(:disabled) {
     @apply cursor-pointer;
-  }
-  /* Ensure images never overflow their containers */
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-  /* Better touch targets on mobile */
-  @media (max-width: 640px) {
-    input, textarea, select, button {
-      font-size: 16px; /* Prevents iOS zoom on focus */
-    }
   }
 }
 
@@ -282,44 +261,10 @@
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
-  /* Prevent horizontal overflow */
-  overflow-x: hidden;
-}
-
-/* Use svh for mobile viewport height support */
-@supports (height: 100svh) {
-  .min-h-\[100svh\] {
-    min-height: 100svh;
-  }
 }
 
 /* Selection color */
 ::selection {
   background: oklch(0.85 0.10 300);
   color: oklch(0.20 0.02 300);
-}
-
-/* Reduce motion for users who prefer it */
-@media (prefers-reduced-motion: reduce) {
-  .animate-float,
-  .animate-breathe,
-  .animate-fade-up {
-    animation: none;
-  }
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* Better focus styles for accessibility */
-:focus-visible {
-  outline: 2px solid oklch(0.50 0.15 300);
-  outline-offset: 2px;
-}
-
-/* Ensure proper tap highlight on mobile */
-@media (hover: none) {
-  a, button {
-    -webkit-tap-highlight-color: oklch(0.50 0.15 300 / 0.1);
-  }
 }

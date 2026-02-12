@@ -6,12 +6,14 @@
  * - Soft, calming color transitions (peach to lavender)
  * - Breathing whitespace for visual tranquility
  * - Gentle animations like deep breathing
- * - FULLY RESPONSIVE: mobile-first approach for all devices
  */
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { motion, AnimatePresence } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { motion } from "framer-motion";
 import { 
   Heart, 
   Users, 
@@ -27,6 +29,7 @@ import {
   Linkedin,
   Youtube,
   Mail,
+  Phone,
   MapPin,
   ChevronDown,
   Star,
@@ -38,7 +41,8 @@ import { useState, useEffect } from "react";
 
 // Image URLs
 const IMAGES = {
-  logo: "https://files.manuscdn.com/user_upload_by_module/session_file/310419663028642573/QpFyIwCNTQuDpvZX.png",
+  logoWhite: "/logo-white.png",
+  logoDark: "/logo-dark.png",
   heroBg: "https://private-us-east-1.manuscdn.com/sessionFile/ZVsB8xR9Plu2xJaKOusiDn/sandbox/m5NBiaiNHEE1Ij3VMwCtyR-img-1_1770187879000_na1fn_cmFhaGF0LWhlcm8tYmc.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvWlZzQjh4UjlQbHUyeEphS091c2lEbi9zYW5kYm94L201TkJpYWlOSEVFMUlqM1ZNd0N0eVItaW1nLTFfMTc3MDE4Nzg3OTAwMF9uYTFmbl9jbUZoYUdGMExXaGxjbTh0WW1jLnBuZz94LW9zcy1wcm9jZXNzPWltYWdlL3Jlc2l6ZSx3XzE5MjAsaF8xOTIwL2Zvcm1hdCx3ZWJwL3F1YWxpdHkscV84MCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5ODc2MTYwMH19fV19&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=H1QzQfpXZ8SZiyjJ-Vsly2M0005f37J5m9cIci2mutCbPSyeN9ftLlgydme19OLiNhbZJ~hMFFvLU5VU~3GO741JGwJBftPLoyIoKePcQNpM3EnqKp6nxJvYUjf5wRAD~t3IKKBisL7Oj8~99VaZXhV3UR7eqKn7ZU3IRVubT8vHz6cAtf0WTSWRqbZmb1YFNewmQoucnEI9UMxPM-29S7VLyRXfj7rEsbq07dnXiwTlrX-7UvIc2yhuchN1IOVbWkJ86POkxcxUXbpG6p9Cf~zxNJxiqx9majWZeW-gX6j-Ao5ZW9d5aSwVhTkO~lIV6gZaY0ql5~0JTzs5ez3oIw__",
   meditation: "https://private-us-east-1.manuscdn.com/sessionFile/ZVsB8xR9Plu2xJaKOusiDn/sandbox/m5NBiaiNHEE1Ij3VMwCtyR-img-2_1770187880000_na1fn_cmFhaGF0LW1lZGl0YXRpb24.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvWlZzQjh4UjlQbHUyeEphS091c2lEbi9zYW5kYm94L201TkJpYWlOSEVFMUlqM1ZNd0N0eVItaW1nLTJfMTc3MDE4Nzg4MDAwMF9uYTFmbl9jbUZoYUdGMExXMWxaR2wwWVhScGIyNC5wbmc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd18xOTIwLGhfMTkyMC9mb3JtYXQsd2VicC9xdWFsaXR5LHFfODAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTg3NjE2MDB9fX1dfQ__&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=DX8YH0hdFPfT73VA7bqmaTd-vX2zPX8vxy7AxmOgs-2vRjFUjEu1bgYT88-2CWJKn3jQB5odefnsTtV8bs1HdaC0zak5qbVPXgv5GsX4lsYLsBzKwdkqXqbsKIQfxifPVeDSQA91dSrdicYImigEfbtWKv7xuiKVrXKd3f8lHm3Ms68TB4JzM3MVVNnr2quGqExfJGbD-F4fwDWDRICri53~ZM17aNK9FRJXPcLHmd~pBCHTVMdcFxsiRJDu3q-yGOS7ofAHA0cMpkYdHll-HLtJFpnVy8fUUVrR7A4YiJyYSue-7qtblCQNcaRd-ZiW2x6bwSCeKjYU2MBCVCVS~w__",
   counseling: "https://private-us-east-1.manuscdn.com/sessionFile/ZVsB8xR9Plu2xJaKOusiDn/sandbox/m5NBiaiNHEE1Ij3VMwCtyR-img-3_1770187888000_na1fn_cmFhaGF0LWNvdW5zZWxpbmc.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvWlZzQjh4UjlQbHUyeEphS091c2lEbi9zYW5kYm94L201TkJpYWlOSEVFMUlqM1ZNd0N0eVItaW1nLTNfMTc3MDE4Nzg4ODAwMF9uYTFmbl9jbUZoYUdGMExXTnZkVzV6Wld4cGJtYy5wbmc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd18xOTIwLGhfMTkyMC9mb3JtYXQsd2VicC9xdWFsaXR5LHFfODAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTg3NjE2MDB9fX1dfQ__&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=a5mNbF~nLEIVjBgKArkFncAOmeFMvyPb36eRgwXnDOJVK4kkJGuL85Es7GnHNEOAt62F~lC6IT5KqqPnC~9cn54x10VpGUysBrGPjBoX2xQo~0dvqOJg1RqMQSYRB9LPLuLPkb5kfG~ocqZzuiB3UJmKZ2gKzvhGIBJMogMr4CZR7USO71Vm8eUXoKyQoKcV4E1LyZHjroh21Q06Vy~pkeHA4jK0Bx9UiYV-YQ4Il8xLyzZvndgSmVMvihj2I~vDj9ZzBU3rr5Tdg1DdQVF17agkLY2-6MVojX04Jgw2w5lJFXfKJ67yF2x6vlfJu6Cf5TiTbQySMYvdoVdQJrTxag__",
@@ -60,7 +64,7 @@ const staggerContainer = {
   }
 };
 
-// Navigation Component - fully responsive with mobile drawer
+// Navigation Component
 function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -72,16 +76,6 @@ function Navigation() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [isMobileMenuOpen]);
 
   const navLinks = [
     { href: "#about", label: "About" },
@@ -96,114 +90,76 @@ function Navigation() {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"
     }`}>
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16 sm:h-20">
-          <a href="#" className="flex items-center gap-2 sm:gap-3 z-[10000] relative">
-            <img src={IMAGES.logo} alt="Raahat Logo" className="h-8 sm:h-10 md:h-12 w-auto" />
-            <span className="font-display text-lg sm:text-xl font-semibold text-foreground">
-              Raahat
-            </span>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-20">
+          <a href="#" className="flex items-center gap-3">
+{/*            <img src={IMAGES.logoWhite} alt="Raahat Logo" className="h-12 w-auto" />
+*/}
+<img src={isScrolled ? IMAGES.logoDark : IMAGES.logoWhite} alt="Raahat Logo" className="h-14 w-auto transition-all duration-300" />
+<span className={`font-alice text-xl font-semibold transition-colors ${isScrolled ? "text-foreground" : "text-foreground"}`}>Raahat</span>
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium transition-colors hover:text-primary text-foreground/80"
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  isScrolled ? "text-foreground/80" : "text-foreground/80"
+                }`}
               >
                 {link.label}
               </a>
             ))}
-            <Button asChild className="rounded-full px-5 xl:px-6">
+            <Button asChild className="rounded-full px-6">
               <a href="#join">Join Now</a>
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 z-[10000] relative"
+            className="lg:hidden p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-      </div>
 
-      {/* Mobile Navigation Overlay */}
-      <AnimatePresence>
+        {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9998] lg:hidden"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Mobile Navigation Panel */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-white shadow-2xl z-[9999] lg:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-white rounded-2xl shadow-lg mb-4 overflow-hidden"
           >
-            <div className="pt-20 pb-8 px-6 h-full overflow-y-auto">
-              <div className="space-y-1">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="block py-3 px-4 text-base font-medium text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-xl transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-              <div className="mt-6 px-4">
-                <Button asChild className="w-full rounded-full" size="lg">
-                  <a href="#join" onClick={() => setIsMobileMenuOpen(false)}>Join Now</a>
-                </Button>
-              </div>
-              {/* Social links in mobile menu */}
-              <div className="mt-8 px-4 pt-6 border-t border-border/50">
-                <p className="text-xs text-muted-foreground mb-3">Follow us</p>
-                <div className="flex gap-3">
-                  <a href="https://instagram.com/wellness.society_iitmbs" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="Instagram">
-                    <Instagram className="h-4 w-4 text-primary" />
-                  </a>
-                  <a href="https://www.linkedin.com/company/wellness-society-iitmbs/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="LinkedIn">
-                    <Linkedin className="h-4 w-4 text-primary" />
-                  </a>
-                  <a href="https://www.youtube.com/@Raahatiitmbs" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="YouTube">
-                    <Youtube className="h-4 w-4 text-primary" />
-                  </a>
-                  <a href="https://linktr.ee/wellness.society.iitmbs" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors" aria-label="Linktree">
-                    <TreePine className="h-4 w-4 text-primary" />
-                  </a>
-                </div>
-              </div>
+            <div className="py-4 px-6 space-y-4">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="block py-2 text-foreground/80 hover:text-primary transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ))}
+              <Button asChild className="w-full rounded-full">
+                <a href="#join">Join Now</a>
+              </Button>
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </div>
     </nav>
   );
 }
 
-// Hero Section - responsive typography and spacing
+// Hero Section
 function HeroSection() {
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
@@ -211,62 +167,62 @@ function HeroSection() {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/80" />
       
-      {/* Floating decorative elements - hidden on small screens for performance */}
-      <div className="hidden sm:block absolute top-1/4 left-10 w-16 md:w-20 h-16 md:h-20 rounded-full bg-primary/10 animate-float" style={{ animationDelay: "0s" }} />
-      <div className="hidden sm:block absolute top-1/3 right-10 md:right-20 w-12 md:w-16 h-12 md:h-16 rounded-full bg-accent/20 animate-float" style={{ animationDelay: "1s" }} />
-      <div className="hidden md:block absolute bottom-1/4 left-1/4 w-12 h-12 rounded-full bg-secondary/30 animate-float" style={{ animationDelay: "2s" }} />
+      {/* Floating decorative elements */}
+      <div className="absolute top-1/4 left-10 w-20 h-20 rounded-full bg-primary/10 animate-float" style={{ animationDelay: "0s" }} />
+      <div className="absolute top-1/3 right-20 w-16 h-16 rounded-full bg-accent/20 animate-float" style={{ animationDelay: "1s" }} />
+      <div className="absolute bottom-1/4 left-1/4 w-12 h-12 rounded-full bg-secondary/30 animate-float" style={{ animationDelay: "2s" }} />
 
-      <div className="container relative z-10 pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-20">
-        <div className="max-w-3xl mx-auto text-center px-2">
+      <div className="container relative z-10 pt-32 pb-20">
+        <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
           >
-            <motion.div variants={fadeInUp} className="mb-4 sm:mb-6">
-              <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium">
+            <motion.div variants={fadeInUp} className="mb-6">
+              <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
                 IIT Madras BS in Data Science and Applications
               </span>
             </motion.div>
             
             <motion.h1 
               variants={fadeInUp}
-              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-foreground mb-4 sm:mb-6 leading-tight"
+              className="font-display text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight"
             >
-              Find Your <span className="gradient-text">Peace</span> with Raahat
+              Find Your <span className="gradient-text">Peace</span> with <span className={`font-alice`}>Raahat</span>
             </motion.h1>
             
             <motion.p 
               variants={fadeInUp}
-              className="text-base sm:text-lg md:text-xl text-foreground/70 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2"
+              className="text-lg md:text-xl text-foreground/70 mb-10 max-w-2xl mx-auto leading-relaxed"
             >
               The Mental Health and Wellness Society dedicated to promoting happiness, 
               tranquility, and sanity. You don't have to deal with it alone anymore.
             </motion.p>
             
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
-              <Button asChild size="lg" className="rounded-full px-6 sm:px-8 text-sm sm:text-base">
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="rounded-full px-8 text-base">
                 <a href="#join">
-                  Become a Member <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  Become a Member <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-6 sm:px-8 text-sm sm:text-base bg-white/50 backdrop-blur-sm">
+              <Button asChild variant="outline" size="lg" className="rounded-full px-8 text-base bg-white/50 backdrop-blur-sm">
                 <a href="#about">Learn More</a>
               </Button>
             </motion.div>
           </motion.div>
         </div>
         
-        {/* Scroll indicator - hidden on very small screens */}
+        {/* Scroll indicator */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="hidden sm:block absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
           <a href="#about" className="flex flex-col items-center text-foreground/50 hover:text-primary transition-colors">
-            <span className="text-xs sm:text-sm mb-2">Scroll to explore</span>
-            <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6 animate-bounce" />
+            <span className="text-sm mb-2">Scroll to explore</span>
+            <ChevronDown className="h-6 w-6 animate-bounce" />
           </a>
         </motion.div>
       </div>
@@ -274,53 +230,53 @@ function HeroSection() {
   );
 }
 
-// About Section - responsive grid and image positioning
+// About Section
 function AboutSection() {
   return (
-    <section id="about" className="py-16 sm:py-20 md:py-24 bg-white relative overflow-hidden">
+    <section id="about" className="py-24 bg-white relative overflow-hidden">
       {/* Decorative blob */}
-      <div className="absolute -top-40 -right-40 w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-gradient-to-br from-primary/5 to-accent/10 blur-3xl" />
+      <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-gradient-to-br from-primary/5 to-accent/10 blur-3xl" />
       
       <div className="container relative">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="grid lg:grid-cols-2 gap-10 md:gap-12 lg:gap-16 items-center"
+          className="grid lg:grid-cols-2 gap-16 items-center"
         >
           {/* Image */}
-          <motion.div variants={fadeInUp} className="relative order-2 lg:order-1">
-            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden soft-shadow">
+          <motion.div variants={fadeInUp} className="relative">
+            <div className="relative rounded-3xl overflow-hidden soft-shadow">
               <img 
                 src={IMAGES.meditation} 
                 alt="Raahat community meditation session" 
                 className="w-full h-auto"
               />
             </div>
-            {/* Floating stat card - responsive positioning */}
-            <div className="absolute -bottom-4 -right-2 sm:-bottom-6 sm:-right-6 bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 soft-shadow">
-              <div className="flex items-center gap-2 sm:gap-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Heart className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-primary" />
+            {/* Floating stat card */}
+            <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl p-6 soft-shadow">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Heart className="h-7 w-7 text-primary" />
                 </div>
                 <div>
-                  <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-foreground">800+</div>
-                  <div className="text-xs sm:text-sm text-muted-foreground">Students Supported</div>
+                  <div className="text-3xl font-display font-bold text-foreground">800+</div>
+                  <div className="text-sm text-muted-foreground">Students Supported</div>
                 </div>
               </div>
             </div>
           </motion.div>
 
           {/* Content */}
-          <motion.div variants={fadeInUp} className="order-1 lg:order-2">
-            <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-accent/50 text-primary text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+          <motion.div variants={fadeInUp}>
+            <span className="inline-block px-4 py-2 rounded-full bg-accent/50 text-primary text-sm font-medium mb-6">
               About Raahat
             </span>
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 leading-tight">
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
               Your Safe Space for Mental Wellness
             </h2>
-            <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-foreground/70 leading-relaxed">
+            <div className="space-y-4 text-foreground/70 leading-relaxed">
               <p>
                 The state of one's mind that deserves our attention is mental wellness. 
                 A collective effort is necessary to find a solution to this. It is a state of happiness 
@@ -333,15 +289,15 @@ function AboutSection() {
               </p>
               <p>
                 At IIT Madras, these disturbances may surface all the more frequently when one is away 
-                from their protective social environment. That's where <strong>Raahat</strong> comes in — 
+                from their protective social environment. That's where <strong><span className={`font-alice font-semibold transition-colors`}>Raahat</span></strong> comes in — 
                 we are here to promote happiness, tranquility, and sanity.
               </p>
             </div>
-            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
-              <Button asChild className="rounded-full px-5 sm:px-6 w-full sm:w-auto">
+            <div className="mt-8 flex items-center gap-6">
+              <Button asChild className="rounded-full px-6">
                 <a href="#services">Our Services</a>
               </Button>
-              <a href="#council" className="text-primary font-medium hover:underline flex items-center gap-2 text-sm sm:text-base">
+              <a href="#council" className="text-primary font-medium hover:underline flex items-center gap-2">
                 Meet Our Team <ArrowRight className="h-4 w-4" />
               </a>
             </div>
@@ -352,13 +308,13 @@ function AboutSection() {
   );
 }
 
-// Services Section - responsive grid
+// Services Section
 function ServicesSection() {
   const services = [
     {
       icon: MessageCircle,
       title: "Counseling Services",
-      description: "Free, confidential counseling sessions with a trusted soul. No medication, only pure interaction in a safe environment.",
+      description: "Free, confidential counseling sessions with qualified therapists. No medication, only pure interaction in a safe environment.",
       color: "bg-primary/10 text-primary"
     },
     {
@@ -394,30 +350,30 @@ function ServicesSection() {
   ];
 
   return (
-    <section id="services" className="py-16 sm:py-20 md:py-24 bg-gradient-to-b from-white to-secondary/30 relative">
+    <section id="services" className="py-24 bg-gradient-to-b from-white to-secondary/30 relative">
       <div className="container">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="text-center mb-10 sm:mb-12 md:mb-16"
+          className="text-center mb-16"
         >
           <motion.span 
             variants={fadeInUp}
-            className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium mb-4 sm:mb-6"
+            className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6"
           >
             What We Do
           </motion.span>
           <motion.h2 
             variants={fadeInUp}
-            className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6"
+            className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6"
           >
             Supporting Your Journey
           </motion.h2>
           <motion.p 
             variants={fadeInUp}
-            className="text-sm sm:text-base md:text-lg text-foreground/70 max-w-2xl mx-auto px-2"
+            className="text-lg text-foreground/70 max-w-2xl mx-auto"
           >
             We offer a comprehensive range of services to help you navigate life's challenges 
             and maintain your mental wellness.
@@ -427,21 +383,21 @@ function ServicesSection() {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {services.map((service, index) => (
             <motion.div key={index} variants={fadeInUp}>
-              <Card className="h-full bg-white/80 backdrop-blur-sm border-0 soft-shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-1 rounded-xl sm:rounded-2xl">
-                <CardContent className="p-5 sm:p-6 md:p-8">
-                  <div className={`w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl sm:rounded-2xl ${service.color} flex items-center justify-center mb-4 sm:mb-5 md:mb-6`}>
-                    <service.icon className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+              <Card className="h-full bg-white/80 backdrop-blur-sm border-0 soft-shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-1 rounded-2xl">
+                <CardContent className="p-8">
+                  <div className={`w-14 h-14 rounded-2xl ${service.color} flex items-center justify-center mb-6`}>
+                    <service.icon className="h-7 w-7" />
                   </div>
-                  <h3 className="font-display text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-3">
                     {service.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-foreground/70 leading-relaxed">
+                  <p className="text-foreground/70 leading-relaxed">
                     {service.description}
                   </p>
                 </CardContent>
@@ -454,7 +410,7 @@ function ServicesSection() {
   );
 }
 
-// Benefits Section - responsive layout with stacking on mobile
+// Benefits Section
 function BenefitsSection() {
   const benefits = [
     {
@@ -484,79 +440,79 @@ function BenefitsSection() {
   ];
 
   return (
-    <section id="benefits" className="py-16 sm:py-20 md:py-24 bg-white relative overflow-hidden">
+    <section id="benefits" className="py-24 bg-white relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 left-0 w-full h-full">
-        <div className="absolute top-20 left-10 w-40 sm:w-64 h-40 sm:h-64 rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-48 sm:w-80 h-48 sm:h-80 rounded-full bg-accent/10 blur-3xl" />
+        <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-accent/10 blur-3xl" />
       </div>
 
       <div className="container relative">
-        <div className="grid lg:grid-cols-2 gap-10 md:gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
           >
             <motion.span 
               variants={fadeInUp}
-              className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-chart-1/20 text-chart-4 text-xs sm:text-sm font-medium mb-4 sm:mb-6"
+              className="inline-block px-4 py-2 rounded-full bg-chart-1/20 text-chart-4 text-sm font-medium mb-6"
             >
               Member Benefits
             </motion.span>
             <motion.h2 
               variants={fadeInUp}
-              className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 leading-tight"
+              className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight"
             >
               What You Gain as a Member
             </motion.h2>
             <motion.p 
               variants={fadeInUp}
-              className="text-sm sm:text-base md:text-lg text-foreground/70 mb-6 sm:mb-8 md:mb-10"
+              className="text-lg text-foreground/70 mb-10"
             >
               Joining Raahat isn't just about receiving support — it's about becoming part of 
               a movement that values mental wellness and personal growth.
             </motion.p>
 
-            <motion.div variants={staggerContainer} className="space-y-3 sm:space-y-4">
+            <motion.div variants={staggerContainer} className="space-y-4">
               {benefits.map((benefit, index) => (
                 <motion.div 
                   key={index} 
                   variants={fadeInUp}
-                  className="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl bg-secondary/30 hover:bg-secondary/50 transition-colors"
+                  className="flex gap-4 p-4 rounded-xl bg-secondary/30 hover:bg-secondary/50 transition-colors"
                 >
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Sparkles className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-sm sm:text-base text-foreground mb-0.5 sm:mb-1">{benefit.title}</h4>
-                    <p className="text-xs sm:text-sm text-foreground/70">{benefit.description}</p>
+                    <h4 className="font-semibold text-foreground mb-1">{benefit.title}</h4>
+                    <p className="text-sm text-foreground/70">{benefit.description}</p>
                   </div>
                 </motion.div>
               ))}
             </motion.div>
           </motion.div>
 
-          {/* Image - shows below on mobile, right on desktop */}
+          {/* Image */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative mt-8 lg:mt-0"
+            className="relative"
           >
-            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden soft-shadow">
+            <div className="relative rounded-3xl overflow-hidden soft-shadow">
               <img 
                 src={IMAGES.growth} 
                 alt="Personal growth and transformation" 
                 className="w-full h-auto"
               />
             </div>
-            {/* Decorative elements - smaller on mobile */}
-            <div className="absolute -top-3 -left-3 sm:-top-6 sm:-left-6 w-16 sm:w-24 h-16 sm:h-24 rounded-2xl bg-chart-1/20 -z-10" />
-            <div className="absolute -bottom-3 -right-3 sm:-bottom-6 sm:-right-6 w-20 sm:w-32 h-20 sm:h-32 rounded-full bg-primary/10 -z-10" />
+            {/* Decorative elements */}
+            <div className="absolute -top-6 -left-6 w-24 h-24 rounded-2xl bg-chart-1/20 -z-10" />
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-primary/10 -z-10" />
           </motion.div>
         </div>
       </div>
@@ -564,7 +520,7 @@ function BenefitsSection() {
   );
 }
 
-// Initiatives Section - responsive cards
+// Initiatives Section
 function InitiativesSection() {
   const initiatives = [
     {
@@ -577,7 +533,7 @@ function InitiativesSection() {
       title: "Wellness Wednesdays",
       description: "Weekly sessions focusing on different aspects of mental wellness — from meditation to art therapy.",
       image: IMAGES.meditation,
-      date: "Every Month"
+      date: "Every Wednesday"
     },
     {
       title: "Peer Counselor Training",
@@ -588,30 +544,30 @@ function InitiativesSection() {
   ];
 
   return (
-    <section id="initiatives" className="py-16 sm:py-20 md:py-24 bg-gradient-to-b from-secondary/30 to-white">
+    <section id="initiatives" className="py-24 bg-gradient-to-b from-secondary/30 to-white">
       <div className="container">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="text-center mb-10 sm:mb-12 md:mb-16"
+          className="text-center mb-16"
         >
           <motion.span 
             variants={fadeInUp}
-            className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-chart-5/20 text-chart-5 text-xs sm:text-sm font-medium mb-4 sm:mb-6"
+            className="inline-block px-4 py-2 rounded-full bg-chart-5/20 text-chart-5 text-sm font-medium mb-6"
           >
             Our Initiatives
           </motion.span>
           <motion.h2 
             variants={fadeInUp}
-            className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6"
+            className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6"
           >
             Past & Ongoing Activities
           </motion.h2>
           <motion.p 
             variants={fadeInUp}
-            className="text-sm sm:text-base md:text-lg text-foreground/70 max-w-2xl mx-auto px-2"
+            className="text-lg text-foreground/70 max-w-2xl mx-auto"
           >
             Discover the various programs and events we organize to promote mental wellness 
             across our community.
@@ -621,29 +577,29 @@ function InitiativesSection() {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 md:gap-8"
+          className="grid md:grid-cols-3 gap-8"
         >
           {initiatives.map((initiative, index) => (
             <motion.div key={index} variants={fadeInUp}>
-              <Card className="h-full bg-white border-0 soft-shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-2 rounded-xl sm:rounded-2xl overflow-hidden group">
-                <div className="relative h-40 sm:h-44 md:h-48 overflow-hidden">
+              <Card className="h-full bg-white border-0 soft-shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-2 rounded-2xl overflow-hidden group">
+                <div className="relative h-48 overflow-hidden">
                   <img 
                     src={initiative.image} 
                     alt={initiative.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <span className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 px-2.5 sm:px-3 py-1 rounded-full bg-white/90 text-[10px] sm:text-xs font-medium text-foreground">
+                  <span className="absolute bottom-4 left-4 px-3 py-1 rounded-full bg-white/90 text-xs font-medium text-foreground">
                     {initiative.date}
                   </span>
                 </div>
-                <CardContent className="p-4 sm:p-5 md:p-6">
-                  <h3 className="font-display text-base sm:text-lg md:text-xl font-semibold text-foreground mb-2 sm:mb-3">
+                <CardContent className="p-6">
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-3">
                     {initiative.title}
                   </h3>
-                  <p className="text-xs sm:text-sm md:text-base text-foreground/70 leading-relaxed">
+                  <p className="text-foreground/70 leading-relaxed">
                     {initiative.description}
                   </p>
                 </CardContent>
@@ -652,11 +608,39 @@ function InitiativesSection() {
           ))}
         </motion.div>
 
+        {/* Assessment CTA */}
+{/*
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-16 text-center"
+        >
+          <Card className="bg-gradient-to-r from-primary/10 via-accent/10 to-chart-5/10 border-0 rounded-3xl p-8 md:p-12">
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+              Take Your First Step
+            </h3>
+            <p className="text-foreground/70 mb-6 max-w-xl mx-auto">
+              Awareness is key. Take a quick 5-minute self-assessment to understand your mental health better.
+            </p>
+            <Button asChild size="lg" className="rounded-full px-8">
+              <a href="https://forms.gle/bxcFSdmaU9qoMeUW6" target="_blank" rel="noopener noreferrer">
+                Take Assessment <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            </Button>
+            <p className="text-xs text-muted-foreground mt-4">
+              Note: This isn't a strict medical examination
+            </p>
+          </Card>
+        </motion.div>
+*/}
 
       </div>
     </section>
   );
 }
+
 
 // Council Section - structured with Founders, Secretary, Deputy Secretary, Event Coordinators
 function CouncilSection() {
@@ -808,6 +792,7 @@ function CouncilSection() {
   );
 }
 
+
 // Join Section - Direct link to Google Form membership
 function JoinSection() {
   const membershipFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdrt3mQJ0OTl_n7lBOs7DmgSaM1GKflVHmWleZD_0oWpTEvsQ/viewform";
@@ -920,7 +905,8 @@ function JoinSection() {
   );
 }
 
-// Footer - responsive grid
+
+// Footer
 function Footer() {
   const socialLinks = [
     { icon: Instagram, href: "https://instagram.com/wellness.society_iitmbs", label: "Instagram" },
@@ -937,30 +923,28 @@ function Footer() {
   ];
 
   return (
-    <footer className="bg-slate text-white py-10 sm:py-12 md:py-16">
+    <footer className="bg-foreground text-white py-16">
       <div className="container">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-8 sm:mb-10 md:mb-12">
+        <div className="grid md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
-          <div className="sm:col-span-2">
-            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-              <img src={IMAGES.logo} alt="Raahat Logo" className="h-10 sm:h-12 w-auto" />
-              <span className="font-display text-xl sm:text-2xl font-semibold">Raahat</span>
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-3 mb-6">
+              <img src={IMAGES.logoWhite} alt="Raahat Logo" className="h-12 w-auto" />
+              <span className="font-alice text-2xl font-semibold transition-colors">Raahat</span>
             </div>
-            <p className="text-white/70 leading-relaxed mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
+            <p className="text-white/70 leading-relaxed mb-6 max-w-md">
               The Mental Health and Wellness Society of IIT Madras BS in Data Science. 
               Promoting happiness, tranquility, and sanity since our inception.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-4">
               {socialLinks.map((social, index) => (
                 <a
                   key={index}
                   href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
                   aria-label={social.label}
                 >
-                  <social.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <social.icon className="h-5 w-5" />
                 </a>
               ))}
             </div>
@@ -968,13 +952,13 @@ function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-display text-base sm:text-lg font-semibold mb-4 sm:mb-6">Quick Links</h4>
-            <ul className="space-y-2 sm:space-y-3">
+            <h4 className="font-display text-lg font-semibold mb-6">Quick Links</h4>
+            <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <a 
                     href={link.href}
-                    className="text-white/70 hover:text-white transition-colors text-sm sm:text-base"
+                    className="text-white/70 hover:text-white transition-colors"
                   >
                     {link.label}
                   </a>
@@ -985,27 +969,27 @@ function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-display text-base sm:text-lg font-semibold mb-4 sm:mb-6">Get in Touch</h4>
-            <ul className="space-y-3 sm:space-y-4">
-              <li className="flex items-start gap-2 sm:gap-3">
-                <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-primary mt-0.5 flex-shrink-0" />
-                <span className="text-white/70 text-sm sm:text-base break-all">wellness.society@study.iitm.ac.in</span>
+            <h4 className="font-display text-lg font-semibold mb-6">Get in Touch</h4>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <Mail className="h-5 w-5 text-primary mt-0.5" />
+                <span className="text-white/70">wellness.society@study.iitm.ac.in</span>
               </li>
-              <li className="flex items-start gap-2 sm:gap-3">
-                <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary mt-0.5 flex-shrink-0" />
-                <span className="text-white/70 text-sm sm:text-base">IIT Madras BS in Data Science and Applications</span>
+              <li className="flex items-start gap-3">
+                <MapPin className="h-5 w-5 text-primary mt-0.5" />
+                <span className="text-white/70">IIT Madras BS in Data Science and Applications</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="pt-6 sm:pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-          <p className="text-white/50 text-xs sm:text-sm text-center sm:text-left">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-white/50 text-sm">
             © {new Date().getFullYear()} Raahat - Mental Health and Wellness Society. All rights reserved.
           </p>
-          <p className="text-white/50 text-xs sm:text-sm">
-            Made with <Heart className="h-3 w-3 sm:h-4 sm:w-4 inline text-primary" /> for mental wellness
+          <p className="text-white/50 text-sm">
+            Made with <Heart className="h-4 w-4 inline text-primary" /> for mental wellness
           </p>
         </div>
       </div>
@@ -1016,7 +1000,7 @@ function Footer() {
 // Main Home Component
 export default function Home() {
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen">
       <Navigation />
       <HeroSection />
       <AboutSection />
